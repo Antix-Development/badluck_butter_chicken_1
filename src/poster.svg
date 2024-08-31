@@ -1,0 +1,60 @@
+<svg width="4e3" height="2500" version="1.1" viewBox="0 0 4e3 2500" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <filter id="filter198" x="0" y="0" width="1.02" height="1.08" color-interpolation-filters="sRGB">
+   <feTurbulence baseFrequency="0.01 0.01" numOctaves="2" result="turbulence" seed="1" type="fractalNoise"/>
+   <feDisplacementMap in="SourceGraphic" in2="turbulence" result="fbSourceGraphic" scale="25" xChannelSelector="R" yChannelSelector="G"/>
+   <feColorMatrix in="fbSourceGraphic" result="fbSourceGraphicAlpha" values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"/>
+   <feFlood flood-color="rgb(85,119,170)" in="fbSourceGraphic" result="flood"/>
+   <feGaussianBlur in="fbSourceGraphic" result="blur" stdDeviation="0.000000"/>
+   <feOffset dx="35.000000" dy="35.000000" in="blur" result="offset"/>
+   <feComposite in="flood" in2="offset" operator="in" result="comp1"/>
+   <feComposite in="fbSourceGraphic" in2="comp1" result="comp2"/>
+  </filter>
+  <filter id="filter198-7" x="0" y="0" width="1.01" height="1.08" color-interpolation-filters="sRGB">
+   <feTurbulence baseFrequency="0.01 0.01" numOctaves="2" result="turbulence" seed="1" type="fractalNoise"/>
+   <feDisplacementMap in="SourceGraphic" in2="turbulence" result="fbSourceGraphic" scale="25" xChannelSelector="R" yChannelSelector="G"/>
+   <feColorMatrix in="fbSourceGraphic" result="fbSourceGraphicAlpha" values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"/>
+   <feFlood flood-color="rgb(85,119,170)" in="fbSourceGraphic" result="flood"/>
+   <feGaussianBlur in="fbSourceGraphic" result="blur" stdDeviation="0.000000"/>
+   <feOffset dx="35.000000" dy="35.000000" in="blur" result="offset"/>
+   <feComposite in="flood" in2="offset" operator="in" result="comp1"/>
+   <feComposite in="fbSourceGraphic" in2="comp1" result="comp2"/>
+  </filter>
+  <filter id="filter198-5" x="0" y="0" width="1.01" height="1.06" color-interpolation-filters="sRGB">
+   <feTurbulence baseFrequency="0.01 0.01" numOctaves="2" result="turbulence" seed="1" type="fractalNoise"/>
+   <feDisplacementMap in="SourceGraphic" in2="turbulence" result="fbSourceGraphic" scale="25" xChannelSelector="R" yChannelSelector="G"/>
+   <feColorMatrix in="fbSourceGraphic" result="fbSourceGraphicAlpha" values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"/>
+   <feFlood flood-color="rgb(85,119,170)" in="fbSourceGraphic" result="flood"/>
+   <feGaussianBlur in="fbSourceGraphic" result="blur" stdDeviation="0.000000"/>
+   <feOffset dx="35.000000" dy="35.000000" in="blur" result="offset"/>
+   <feComposite in="flood" in2="offset" operator="in" result="comp1"/>
+   <feComposite in="fbSourceGraphic" in2="comp1" result="comp2"/>
+  </filter>
+  <linearGradient id="linearGradient38" x1="-4736" x2="-736" y1="-6494" y2="-6494" gradientTransform="translate(4736 7744)" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#1aabe7" offset="0"/>
+   <stop stop-color="#3dc6e3" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g fill-rule="evenodd">
+  <path transform="matrix(.265 0 0 .276 253 2385)" d="m-61.5 173-106-57.9-118 51.5 22.4-119-85.5-96.3 120-15.3 65.2-111 51.5 109 126 27.7-87.8 82.7z" fill="#f7ec1d"/>
+  <text x="-1904" y="-3617.3125" fill="#78fed0" font-size="192px" stroke-linecap="round" stroke-linejoin="bevel" stroke-width="6" xml:space="preserve"><tspan x="-1904" y="-3617.3125"/></text>
+  <rect y="-.373" width="4e3" height="2500" fill="url(#linearGradient38)" stroke-linecap="round" stroke-linejoin="bevel" stroke-width="6"/>
+  <g transform="translate(-120,-400)">
+   <rect x="1874" y="-924" width="3e3" height="3200" rx="3e3" fill="#fbf9c0"/>
+   <rect x="2137" y="-422" width="2550" height="2510" rx="3e3" fill="#ffe787"/>
+  </g>
+  <g transform="matrix(7.19 7.84 -7.91 7.25 -2582 16364)">
+   <rect x="-846" y="-1202" width="94" height="94" rx="12" fill="#fff" stroke="#000" stroke-linecap="round" stroke-linejoin="bevel" stroke-width="2"/>
+   <path d="m-799-1140c-18.6 0-34.3 8.24-46 20.8.69 5.98 4.84 10.2 11 10.2h70c6.17 0 10.3-4.22 11-10.2-11.7-12.6-27.4-20.8-46-20.8z" fill="#f7941d"/>
+   <path d="m-821-1201a24 32 0 0020.8 16.1 24 32 0 0020.8-16.1z" fill="#af1e25"/>
+   <rect x="-821" y="-1165" width="8" height="8" rx="4"/>
+   <rect x="-785" y="-1165" width="8" height="8" rx="4"/>
+  </g>
+  <g fill="#fff" font-family="Arial" font-size="640px" font-weight="900" stroke-linecap="round" stroke-linejoin="bevel" stroke-opacity=".0667" stroke-width="16">
+   <text transform="matrix(.856 0 0 .856 9906 6543)" x="-9922.8916" y="-6202.0332" filter="url(#filter198)" xml:space="preserve"><tspan x="-9922.8916" y="-6202.0332">Chicken</tspan></text>
+   <text transform="matrix(.588 0 0 .588 3305 4611)" x="-2484.4158" y="-3940.613" filter="url(#filter198-5)" xml:space="preserve"><tspan x="-2484.4158" y="-3940.613">Episode 1 </tspan></text>
+   <text transform="matrix(.464 0 0 .464 4897 3031)" x="-9775.1875" y="-4533.875" filter="url(#filter198)" xml:space="preserve"><tspan x="-9775.1875" y="-4533.875">Butter</tspan></text>
+   <text transform="matrix(.856 0 0 .856 8712 6472)" x="-10063.292" y="-6859.9707" filter="url(#filter198-7)" xml:space="preserve"><tspan x="-10063.292" y="-6859.9707">BadLuck</tspan></text>
+  </g>
+ </g>
+</svg>

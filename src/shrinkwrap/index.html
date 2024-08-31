@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+
+<html lang="en" >
+
+  <head>
+
+    <meta charset="UTF-8">
+
+    <title>ShrinkWrap</title>
+
+		<style>
+
+      :root {
+        --background-color: #333;
+        --text-bright-color: #eee;
+        --text-dark-color: #111;
+        --button-color: #666;
+        --checkbox-color: #666;
+        --input-background-color: #222;
+        --input-border-color: #777;
+        --selected-color: #07f;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        outline: none;
+        user-select: none;
+        border: none;
+        border-radius: 3px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      *:disabled, *:disabled:hover {
+        filter: brightness(0.8);
+        cursor: not-allowed;
+      }
+
+      *:disabled:active {
+        scale: 1;
+      }
+
+      html {
+        font-size: 62.5%;
+      }
+
+      body {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        font-size: 1.8rem;
+        background-color: var(--background-color);
+        color: var(--text-bright-color);
+        padding: 4px;
+      }
+
+      label {
+        display: inline-block;
+        line-height: 2.8rem;
+      }
+      
+      button {
+        margin-top: 4px;
+        background-color: var(--button-color);
+        color: var(--text-bright-color);
+        font-size: 1.8rem;
+        padding: 0 2rem;
+        line-height: 2.8rem;
+        cursor: pointer;
+      }
+
+      button:hover, .listItem:hover, .item:hover {
+        filter: brightness(1.5);
+      }
+      
+      button:active, .listItem:active, .item:active {
+        scale: .975;
+      }
+
+      input {
+        background-color: var(--input-background-color);
+        border: 2px solid var(--input-border-color);
+        color: var(--text-bright-color);
+        font-size: 1.8rem;
+      }
+
+      input[type=number] {
+        text-align: right;
+        direction: rtl;
+        padding: 0 3px;
+      }
+
+      input[type=range] {
+        cursor: pointer;
+      }
+
+      input[type=checkbox]{
+        height: 0;
+        width: 0;
+        visibility: hidden;
+      }
+
+      .checkLabel {
+        top: 2px;
+        cursor: pointer;
+        text-indent: -9999px;
+        width: 5rem;
+        height: 2.8rem;
+        background: var(--input-background-color);
+        border-radius: 1.4rem;
+        border: 2px solid var(--input-border-color);
+        position: relative;
+      }
+
+      .checkLabel:after {
+        content: '';
+        position: absolute;
+        top: .3rem;
+        left: .3rem;
+        width: 1.8rem;
+        height: 1.8rem;
+        background: var(--checkbox-color);
+        border-radius: 2rem;
+      }
+
+      input:checked + .checkLabel:after {
+        background: var(--selected-color);
+      }
+
+      input:checked + .checkLabel:after {
+        left: calc(100% - .3rem);
+        transform: translateX(-100%);
+      }
+
+      select {
+        border: 2px solid var(--input-border-color);
+      }
+ 
+      select, select > option {
+        background-color: var(--input-background-color);
+        color: var(--text-bright-color);
+        font-size: 1.7rem;
+      }
+
+      input:disabled + .checkLabel {
+        filter: brightness(0.6);
+      }
+
+      hr {
+        margin: 1rem 0;
+        width: 100%;
+        border: 1px solid #fff4;
+      }
+
+      h1 {
+        font-size: 2.4rem;
+        line-height: 3.2rem;
+        color: var(--sub-heading-color);
+      }
+
+      h2 {
+        line-height: 3.4rem;
+        color: var(--sub-heading-color);
+      }
+
+      textarea {
+        font-family: 'Courier New', Courier, monospace;
+        width: 100%;
+        height: 100%;
+        resize: none;
+
+        background-color: var(--input-background-color);
+        border: 2px solid var(--input-border-color);
+        color: var(--text-bright-color);
+        padding: 4px;
+
+        font-size: 1.2rem;
+      }
+
+      textarea::placeholder {
+        border-radius: 5px;
+        font-size: 1.8rem;
+        font-weight: 400;      
+      }
+      
+      .row {
+        width: 100%;
+      }
+
+      .container {  display: grid;
+        grid-template-columns: 0.1fr 0.24fr 0.24fr 0.18fr 0.24fr;
+        grid-template-rows: auto 0.8fr auto 1fr;
+        grid-auto-columns: 1fr;
+        gap: 3px 3px;
+        grid-auto-flow: row;
+        grid-template-areas:
+          "header header header header header"
+          "pasteContainer logContainer htmlContainer cssContainer jsContainer"
+          "controls controls controls controls controls"
+          "output output output output output";
+        width: 100%;
+        height: 100%;
+      }
+
+      .header {
+        grid-area: header;
+        padding: 4px;
+        font-weight: 500;
+      }
+
+      .pasteContainer {
+        grid-area: pasteContainer;
+      }
+
+      .logContainer {
+        grid-area: logContainer;
+      }
+
+      .htmlContainer {
+        grid-area: htmlContainer;
+      }
+
+      .cssContainer {
+        grid-area: cssContainer;
+      }
+
+      .jsContainer {
+        grid-area: jsContainer;
+      }
+
+      .controls {
+        grid-area: controls;
+      }
+
+      .output {
+        grid-area: output;
+      }
+
+      .pasteContainer, .logContainer, .htmlContainer, .cssContainer, .jsContainer, .output {
+        display: grid;
+        grid-template-rows: auto 1fr;
+      }
+
+      .centered {
+        text-align: center;
+      }
+
+      #in1 {
+        color: #777;
+      }
+
+      #log1 {
+        color: #eef;
+      }
+
+      #html1 {
+        color: #fe0;
+      }
+
+
+      #js1 {
+        color: #fa0;
+      }
+
+      #css1 {
+        color: #2ae;
+      }
+
+      #out1 {
+        color: #afa;
+      }
+
+    </style>
+
+	</head>
+
+  <body>
+    <div class="container">
+      <div class="header">
+        ShrinkWrap - An HTML, CSS, and JavaScript minifier and compressor,based on <a href="https://github.com/xem/js13k-pack" target="_blank">js13k-pack by xem</a><br>
+        
+
+      </div>
+      <div class="pasteContainer">
+        <label class="centered">&nbsp;</label>
+        <textarea id=in1 spellcheck=false placeholder="Paste your HTML here to begin. Linked and embedded CSS and JS files are okay."></textarea>
+      </div>
+      <div class="logContainer">
+        <label class="centered">LOG</label>
+        <textarea id=log1 spellcheck=false readonly></textarea>
+      </div>
+      <div class="htmlContainer">
+        <label class="centered">HTML</label>
+        <textarea id=html1 spellcheck=false readonly></textarea>
+      </div>
+      <div class="cssContainer">
+        <label class="centered">CSS</label>
+        <textarea id=css1 spellcheck=false readonly></textarea>
+      </div>
+      <div class="jsContainer">
+        <label class="centered">JS</label>
+        <textarea id=js1 spellcheck=false readonly></textarea>
+      </div>
+
+      <div class="controls">
+        <div class=row>
+
+          <label>Minify code</label>
+          <input id="minifyCodeCheckbox" type="checkbox" checked/>
+          <label class="checkLabel" for="minifyCodeCheckbox">Toggle</label>
+
+          <label>&nbsp;Terser Passes</label>
+          <input type="number" id="terserPassesInput" min="1" max="10" step="1" value="2">
+
+          <label>&nbsp;Unsafe tersing</label>
+          <input id="terserUnsafeCheckbox" type="checkbox"/>
+          <label class="checkLabel" for="terserUnsafeCheckbox">Toggle</label>
+
+          <label>&nbsp;Zip output</label>
+          <input id="zipCodeCheckbox" type="checkbox" checked/>
+          <label class="checkLabel" for="zipCodeCheckbox">Toggle</label>
+
+          <label>&nbsp;RoadRoll output</label>
+          <select id="roadrollerStrengthSelect">
+            <option selected>No</option>
+            <option>Light</option>
+            <option>Strong</option>
+          </select>
+
+          &nbsp;<button id="startMinificationButton" disabled>ShrinkWrap</button>
+          &nbsp;<button onclick="downloadZip();" id="downloadZipButton" disabled>Download ZIP</button>
+
+        </div>
+
+      </div>
+
+      <div class="output">
+        <label class=centered>OUTPUT</label>
+        <textarea id=out1 spellcheck=false readonly></textarea>
+      </div>
+
+    </div>
+  </body>
+
+  <script src=terser.5.14.1.js></script>
+  <script src="jszip.min.js"></script>
+  <script src="zopfli/libzopfli.js"></script>
+  <script src="zopfli/compress.js"></script>
+  <script src="zopfli/byte-b64.js"></script>
+
+  <script type=module>
+    import { ResourcePool, Packer } from "./rr/index.js";
+
+    const resourcePool = new ResourcePool(); // this should persist
+
+    const log = t => {
+      log1.value += t + '\n';
+      log1.scrollTop = log1.scrollHeight;
+    }
+
+    let linkedStyleSheets = [];
+    let linkedScripts = [];
+
+    let zipzop64; // Our encoded zip file.
+
+    // Load the text file with the given filename and pass it to the given callback function.
+    const loadTextfile = (filename, callback) => {
+    fetch(`../${filename}`)
+      .then(response => response.text())
+      .then(data => {
+        if (callback) callback(data);
+      })
+      .catch(error => {
+        console.error(`Error loading file ${filename}:`, error);
+      });
+    }
+
+    // Queue the next linked style sheet for loading and if there are no more, then begin loading linked scripts.
+    const queueNextLinkedStyleSheetForLoading = e => {
+      if (linkedStyleSheets.length) {
+        loadLinkedStyleSheet(linkedStyleSheets.pop()); // Load the next file.
+      } else {
+        queueNextLinkedScriptForLoading(); // Start linked scripts loading.
+      }
+    };
+
+    // Recursively load linked stylesheets.
+    const loadLinkedStyleSheet = filename => {
+      log(`loading linked stylesheet (${filename})...`);
+      loadTextfile(filename, data => {
+        log('processing stylesheet');
+        css1.value += data;
+        queueNextLinkedStyleSheetForLoading();
+      });
+    };
+
+    // Queue the next linked script for loading and if there are no more, then begin minification.
+    const queueNextLinkedScriptForLoading = e => {
+      if (linkedScripts.length) {
+        loadLinkedScript(linkedScripts.pop()); // Load the next file.
+      } else {
+        log('preprocessing completed.\n\nSet options and click "ShrinkWrap" button to continue.\n');
+        startMinificationButton.disabled = false;
+      }
+    };
+
+    // Recursively load linked scripts.
+    const loadLinkedScript = filename => {
+      log(`loading linked script (${filename})...`);
+      loadTextfile(filename, data => {
+        log('processing script');
+        js1.value += data;
+        queueNextLinkedScriptForLoading();
+      });
+    };
+
+    startMinificationButton.onclick = async e => {
+
+      out1.value = '';
+      log1.value = '\n';
+
+      let minificationStartTime = performance.now();
+
+      let start;
+
+      log(`Minify code: ${(minifyCodeCheckbox.checked) ?'yes' :'no'}`);
+      log(`Terser passes: ${terserPassesInput.value}`);
+      log(`Unsafe tersing: ${(terserUnsafeCheckbox.checked) ?'yes' :'no'}`);
+      log(`Roadroll: ${['none', 'light', 'strong'][roadrollerStrengthSelect.selectedIndex]}`);
+      log(`Zip output: ${(zipCodeCheckbox.checked) ?'yes' :'no'}\n`);
+
+      let js = js1.value.replace(/;+$/, ";");
+
+      log("raw size: " + (html1.value + "<script>" + js + "<\/script>" + (css1.value ? ("<style>" + css1.value) : "")).length + " bytes");
+
+      // 
+      // Terser.
+      // 
+
+      if (minifyCodeCheckbox.checked) {
+        start = performance.now();
+        setTimeout(() => {
+          log("Starting Terser minification...");
+          Terser.minify(js, {
+            toplevel: true,
+            compress: {
+              passes: terserPassesInput.value * 1,
+              unsafe: terserUnsafeCheckbox.checked,
+              pure_getters: true
+            }
+          }).then(terser => {
+            if (terser.code) js = terser.code;
+            log(`Terser minification completed (${(performance.now() - start) | 0}ms).`);
+            continueMinification();
+          });
+        }, 0);
+      } else {
+        continueMinification();
+      }
+
+      // 
+      // Roadroller.
+      // 
+      function continueMinification() {
+        start = performance.now();
+        const rr = roadrollerStrengthSelect.selectedIndex;
+
+        if (rr === 1) {
+          optimizeRoadroller('Light');
+        } else if (rr === 2) {
+          optimizeRoadroller('Strong');
+        } else {
+          finishMinification();
+        }
+
+        function optimizeRoadroller(strength) {
+          log(`Starting Roadroller optimization (${strength})...`);
+          const inputs = [{ data: js, type: 'js', action: 'eval' }];
+          const packer = new Packer(inputs, { resourcePool });
+
+          const optimizePromise = new Promise((resolve, reject) => {
+            const optimizeStep = () => {
+              try {
+                const result = packer.optimize(rr === 2 ? 2 : 1);
+                resolve(result);
+              } catch (error) {
+                reject(error);
+              }
+            };
+
+            setTimeout(optimizeStep, 0);
+          });
+
+          optimizePromise.then(() => {
+            const { firstLine, secondLine } = packer.makeDecoder();
+            js = firstLine + secondLine;
+            log(`Roadroller optimization (${strength}) completed (${(performance.now() - start) | 0}ms).`);
+            finishMinification();
+          }).catch(error => {
+            log(`Error during Roadroller optimization: ${error}`);
+          });
+        }
+      }
+
+      function finishMinification() {
+
+        // 
+        // Minify CSS.
+        // 
+
+        log(`Minifing CSS`);
+        let cssLen1 = css1.value.length;
+        let css = css1.value.replace(/\/\*[\s\S]*?\*\//g, ''); // Remove all comments.
+        css = css.replace(/\s+/g, ' ').trim(); // Remove all whitespace and line feeds.
+        css = css.replace(/\s*:\s*/g, ':'); // Remove spaces around colons.
+        css = css.replace(/\s*;\s*/g, ';'); // Remove spaces around semicolons.
+        css = css.replace(/\s*{\s*/g, '{'); // Remove spaces to the left and right of "{".
+        css = css.replace(/\s*}\s*/g, '}'); // Remove spaces to the left and right of "}".
+        css = css.replace(/\s*,\s*/g, ',');  // Remove spaces to the left and right of ",".
+        css = css.replace(/\s*!/g, '!'); // Remove spaces preceding "!".
+        css = css.replace(/;}/g, '}'); // Replace all occurrences of ";} with "}".
+
+        // 
+        // Minify HTML.
+        // 
+
+        log(`Minifing HTML`);
+        let html = html1.value.replace(/<!--[\s\S]*?-->/g, ''); // Remove all HTML comments.
+        html = html.replace(/\s+/g, ' ').trim(); // Remove all whitespace and line feeds.
+        html = html.replace(/>\s+</g, '><'); // Remove spaces to the left and right of tags.
+
+        // 
+        // Concatenate.
+        // 
+
+        log(`Creating output`);
+        const styles = `<style>${css}</style>`;
+        const headCloseIndex = html.indexOf('<\/head>');
+        if (headCloseIndex !== -1) {
+          html = html.slice(0, headCloseIndex) + styles + html.slice(headCloseIndex);
+        } else {
+          html += styles;
+        }
+
+        const scripts = `<script>${js}<\/script>`;
+        const bodyCloseIndex = html.indexOf('<\/body>');
+        if (bodyCloseIndex !== -1) {
+          html = html.slice(0, bodyCloseIndex + 7) + scripts + html.slice(bodyCloseIndex + 7);
+        } else {
+          html += scripts;
+        }
+
+        out1.value = html; // Stuff the final output into the output textarea.
+
+        log(`output size: ${out1.value.length} bytes)`);
+
+        // 
+        // Zip.
+        // 
+
+        if (zipCodeCheckbox.checked) {
+          start = performance.now();
+
+          log('Zipping output');
+
+          const z = window.Module;
+
+          function ensureByteBuffer(input) {
+            if (typeof input === 'string') {
+              const a = z.intArrayFromString(input);
+              a.length--; // because emscripten's intArrayFromString() adds trailing nul
+              return a;
+            } else if (Array.isArray(input)) {
+              return Uint8Array.from(input);
+            } else {
+              return input;
+            }
+          }
+
+          const defaultOptions = {
+            verbose: false,
+            verbose_more: false,
+            numiterations: 15,
+            blocksplitting: true,
+            blocksplittingmax: 15,
+          };
+
+          function compress(input, format, options) {
+            console.assert(input != null, "buffer must not be null");
+            console.assert(options != null, "options must not be null");
+
+            const byteBuffer = ensureByteBuffer(input);
+            const bufferPtr = z.allocate(byteBuffer, 'i8', z.ALLOC_NORMAL);
+
+            const opts = { ...defaultOptions, ...options };
+
+            const output = z._createZopfliJsOutput();
+            z._compress(bufferPtr, byteBuffer.length, output,
+              format,
+              opts.verbose,
+              opts.verbose_more,
+              opts.numiterations,
+              opts.blocksplitting,
+              opts.blocksplittingmax,
+            );
+
+            const outputPtr = z._getBuffer(output);
+            const outputSize = z._getBufferSize(output);
+
+            const result = z.HEAPU8.slice(outputPtr, outputPtr + outputSize);
+            z._deallocate(outputPtr);
+            z._deallocate(output);
+            z._deallocate(bufferPtr);
+
+            return result;
+          }
+
+          var inflated = (new TextEncoder()).encode(html);
+          var deflated = compress(inflated, 2, defaultOptions);
+
+          var zipzop = makeZip("index.html", inflated, deflated);
+
+          var decoder = new TextDecoder('utf8');
+          zipzop64 = bytesToBase64(zipzop);
+          downloadZipButton.disabled = false;
+          log(`zipped output (${(performance.now() - start) | 0}ms)}.`);
+          log("zip file: " + zipzop.length + " bytes.");
+
+        } else {
+          dl1.style.color = "transparent";
+        }
+        
+        log(`\nMinification completed (${(performance.now() - minificationStartTime) | 0}ms).\n`);
+      }
+    };
+
+    // Download the zipped file.
+    downloadZipButton.onclick = e => {
+      const dl1 = document.createElement('a');
+      dl1.setAttribute("download", "entry.zip");
+      dl1.href = "data:application/zip;base64," + zipzop64;
+      document.body.appendChild(dl1);
+      dl1.click(); // Start the download.
+      document.body.removeChild(dl1);
+    };
+
+    // When any text is pasted into the HTML TextInput..
+    in1.onpaste = e => {
+      
+      startMinificationButton.disabled = downloadZipButton.disabled = true;
+
+      log1.value = '';
+
+      let html = (e.clipboardData || window.clipboardData).getData('text');
+
+      let css = '';
+
+      html1.value = css1.value = js1.value = '';
+
+      let match;
+      let done;
+
+      // 
+      // Extract linked script filenames and remove links from the HTML.
+      // 
+
+      const scriptRegex = /<script\s+src="([^"]+)"\s*><\/script>/gi;
+      while ((match = scriptRegex.exec(html)) !== null) linkedScripts.push(match[1]); // Use a loop to find all matches and collect the filenames.
+      html = html.replace(scriptRegex, ''); // Replace all <script> tags with an empty string.
+
+      // 
+      // Extract linked style sheets filenames and remove links from the HTML.
+      // 
+
+      const linkRegex = /<link\s+rel="stylesheet"\s+href="([^"]+)"\s*\/?>/gi;
+      while ((match = linkRegex.exec(html)) !== null) linkedStyleSheets.push(match[1]); // Find all matches and collect the filenames
+      html = html.replace(linkRegex, ''); // Replace all <link> tags with an empty string.
+
+      // 
+      // Append embedded style sheets to the css textinput and remove from the HTML.
+      // 
+
+      let embeddedStyleSheets = [];
+
+      done = 0;
+      while (!done) {
+        let start = html.indexOf('<style>');
+        let end = html.indexOf('</style>');
+        if (start >= 0 && end >= 0) {
+          log(`processing embedded style sheet from ${start} to ${end}...`);
+          embeddedStyleSheets.push(html.slice(start + 7, end).trim());
+          html = html.substring(0, start) + html.substring(end + 8);
+        } else {
+          done = 1;
+        }
+      }
+
+      for (let i = embeddedStyleSheets.length; i--;) css1.value += embeddedStyleSheets[i];
+
+      // 
+      // Append embedded scripts to the js textinput and remove from the HTML.
+      // 
+
+      let embeddedScripts = [];
+
+      done = 0;
+      while (!done) {
+        let start = html.indexOf('<script>');
+        let end = html.indexOf('<\/script>');
+        if (start >= 0 && end >= 0) {
+          log(`processing embedded script from ${start} to ${end}...`);
+          embeddedScripts.push(html.slice(start + 8, end).trim());
+          html = html.substring(0, start) + html.substring(end + 9);
+        } else {
+          done = 1;
+        }
+      }    
+
+      for (let i = embeddedScripts.length; i--;) js1.value += embeddedScripts[i];
+
+      html1.value = html;
+
+      queueNextLinkedStyleSheetForLoading(); // Begin loading linked files.
+    };
+
+  </script>
+</html>

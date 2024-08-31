@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Badluck Butter Chicken Episode 1</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        user-select: none;
+        outline: 0;
+        overflow: hidden;
+        font-family: Arial;
+        color: #fff;
+        text-align: center;
+        transform-origin: center center;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+
+      body {
+        width: 100vw;
+        height: 100vh;
+        background-color: #000;
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        padding:0 9px;
+        font-weight: 900;
+        text-shadow: 10px 10px #57a;
+        filter: url(#Z1);
+      }
+
+      h1 {
+        font-size: 240px;
+        line-height: 260px;
+      }
+
+      h2 {
+        font-size: 180px;
+        line-height: 200px;
+      }
+
+      h3 {
+        font-size: 80px;
+        line-height: 100px;
+      }
+
+      h4 {
+        font-size: 110px;
+        line-height: 130px;
+        position: relative;
+        text-shadow: none;
+      }
+
+      h5 {
+        font-size: 60px;
+        line-height: 80px;
+      }
+
+      h6 {
+        font-size: 40px;
+        line-height: 60px;
+      }
+
+      /* Text buttons */
+      a {
+        align-content: center;
+        text-align: center;
+        font-size: 64px;
+        border-radius: 24px;
+        border: 12px solid #eee;
+        box-shadow: 24px 24px #0003;
+        transition: transform 0.25s cubic-bezier(0.47, 1.64, 0.45, 0.82);
+      }
+      
+      a:hover {
+        filter: brightness(1.1);
+        transform: rotate(5deg);
+      }
+
+      a:active {
+        translate: 8px 8px;
+        box-shadow: 16px 16px #0003;
+      }
+      
+      #b {
+        width: 1920px;
+        height: 1080px;
+        transform-origin: top left;
+        background: linear-gradient(#19c 0%, #2bf 100%);
+        cursor: pointer;
+      }
+
+      #s {
+        background: radial-gradient(circle,#5de 0%, #5de0 70%);
+      }
+
+      #o, #m, #g, #v, #j {
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity .5s ease, visibility .5s ease;
+      }
+
+      .menu-hidden {
+        opacity: 0 !important;
+        visibility: hidden !important;
+      }
+
+      .menu-visible {
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+
+      .centered {
+        width: 100%;
+        text-align: center;
+      }
+
+      #chicky:hover {
+        scale: 1.01;
+        filter: brightness(1.1);
+      }
+
+      #a, #u, #b {
+        display: none;
+      }
+
+    </style>
+  </head>
+
+  <body oncontextmenu="return false" ondragstart="return false">
+
+    <!-- Text distortion filter -->
+    <svg width="0" height="0" version="1.1" viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg">
+      <filter id="Z1" x="0" y="0" width="1" height="1" color-interpolation-filters="sRGB">
+        <feTurbulence baseFrequency="0.01 0.01" numOctaves="2" type="fractalNoise" seed="16540" result="T"/>
+        <feDisplacementMap in="SourceGraphic" in2="T" scale="25" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+    </svg>
+
+    <!-- Texture atlas is rendered here. -->
+    <canvas id=a width=1024 height=2048></canvas>
+
+    <!-- Mime encoded images appended here for later use. -->
+    <div id=u></div>
+
+    <!-- The main game content lives inside this container. -->
+    <div id=b>
+
+      <!-- Radial gradient that appears behind the sun. -->
+      <div id=s></div>
+
+      <!-- The entire game scene is rendered here. -->
+      <canvas id=c width=1920 height=1080></canvas>
+
+      <!-- Pre game menu. -->
+      <div id=v></div>
+
+      <!-- Main menu. -->
+      <div id=m></div>
+
+      <!-- Options menu. -->
+      <div id=o></div>
+
+      <!-- Ingame menu. -->
+      <div id=g></div>
+
+      <!-- Game over menu. -->
+      <div id=j></div>
+
+    </div>
+
+  </body>
+  
+  <script src="game.js"></script>
+
+</html>

@@ -509,7 +509,7 @@
         // Minify CSS.
         // 
 
-        log(`Minifing CSS`);
+        log(`\nMinifing CSS`);
         let cssLen1 = css1.value.length;
         let css = css1.value.replace(/\/\*[\s\S]*?\*\//g, ''); // Remove all comments.
         css = css.replace(/\s+/g, ' ').trim(); // Remove all whitespace and line feeds.
@@ -562,7 +562,7 @@
         if (zipCodeCheckbox.checked) {
           start = performance.now();
 
-          log('Zipping output');
+          log('\nZipping output');
 
           const z = window.Module;
 
@@ -625,7 +625,13 @@
           zipzop64 = bytesToBase64(zipzop);
           downloadZipButton.disabled = false;
           log(`zipped output (${(performance.now() - start) | 0}ms)}.`);
-          log("zip file: " + zipzop.length + " bytes.");
+          const zippedSize = zipzop.length;
+          const maxSize = 1024 * 13;
+          const remainingSize = maxSize - zippedSize;
+          const percentage = (zippedSize / maxSize) * 100;
+
+          log("zip file: " + zippedSize + " bytes.");
+          log(`\n${zippedSize.toLocaleString()} bytes of ${maxSize.toLocaleString()} used (${percentage.toFixed(2)}%), ${remainingSize.toLocaleString()} bytes remaining.`);
 
         } else {
           dl1.style.color = "transparent";

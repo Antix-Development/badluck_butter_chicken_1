@@ -27,14 +27,6 @@ const FX_MAGNET     = 4;
 const FX_BESTSCORE  = 5;
 const FX_ALARM      = 6;
 
-// Easing function.
-// const easeInOutQuad = (t, b, c, d) => {
-//   t /= d / 2;
-//   if (t < 1) return c / 2 * t * t + b;
-//   t--;
-//   return -c / 2 * (t * (t - 2) - 1) + b;
-// };
-
 // Keyboard variables.
 let keysEnabled;
 let waitingForKey; // 1 if app is waiting for a new control key to be pressed.
@@ -934,7 +926,6 @@ const newTextButton = (x, y, w, h, text, color, callback, id) => {
 const openMenu = (menu) => {
   // Hide current menu.
   activeMenu.classList.toggle('menu-visible');
-  activeMenu.classList.toggle('menu-hidden');
 
   // Show the desired menu and make it the active one.
   if (menu) menu.classList.toggle('menu-visible');
@@ -959,7 +950,6 @@ const awardPoints = (n) => {
 
 // Create a new actor object with the given attributes.
 const newActor = (type, x, y, vx, vy, texture, radius, alpha, scale, angle, rotationRate, ttl, gx, gy, fades, shrinks) => ({
-  // Player, Mongol, Projectile, Particle.
   type,
 
   x,
@@ -1174,16 +1164,6 @@ const optionsButtonClicked = e => {
   openMenu(o);
 };
 
-// Open the help menu.
-// const helpButtonClicked = e => {
-//   openMenu(h);
-// };
-
-// // Close the help menu.
-// const helpOkayButtonClicked = e => {
-//   openMenu(m);
-// };
-
 // Toggle audio output.
 const audioButtonClicked = e => {
   if (!paused) {
@@ -1349,9 +1329,8 @@ const allAssetsLoaded = e => {
   appendElementTo(newTextLabel(TYPE_H2, 'BadLuck', 60, 60), m);
   appendElementTo(newTextLabel(TYPE_H3, 'Butter', 182, 232), m);
   appendElementTo(newTextLabel(TYPE_H2, 'Chicken', 460, 220), m);
-  appendElementTo(newTextLabel(TYPE_H6, 'Flies The Unfriendly Skies', 565, 400), m);
+  appendElementTo(newTextLabel(TYPE_H6, 'Flies The Unfriendly Skies', 565, 430), m);
   appendElementTo(chicky, m); // Move from assets container to main menu.
-
   setElementPosition(chicky, 990, 60);
   chicky.style.transform = 'rotate(45deg)';
   appendElementTo(newTextLabel(TYPE_H5, 'TOP SCORE', 765, 530), m);
@@ -1385,13 +1364,10 @@ const allAssetsLoaded = e => {
   centerElement(playerScoreLabel);
   appendElementTo(newTextButton(32, 24, 110, 160, '\u2016', '8c2', pauseButtonClicked, 'pauseButton'), g);
   appendElementTo(newTextButton(1744, 24, 120, 160, '\u266b', '8c2', audioButtonClicked, 'audioButton'), g);
-
   setElementBackgroundColor(audioButton, (OPTIONS.audio) ? '8c2' : '888');
-
   appendElementTo(magnetPickup, g);
   setElementPosition(magnetPickup, 250, 32);
   appendElementTo(newTextLabel(TYPE_H3, '0', 350, 24, 'magnetCounterLabel'), g);
-
   appendElementTo(shieldPickup, g);
   setElementPosition(shieldPickup, 1500, 32);
   appendElementTo(newTextLabel(TYPE_H3, '0', 1600, 24, 'shieldCounterLabel'), g);
@@ -1407,7 +1383,6 @@ const allAssetsLoaded = e => {
   appendElementTo(newTextLabel(TYPE_H3, '', 0, 620, 'finalScoreLabel'), j);
   centerElement(finalScoreLabel);
   appendElementTo(newTextButton(610, 810, 700, 160, 'Continue', '8c2', gameOverButtonClicked), j);
-
 
   // 
   // All menus have now been created.
@@ -1449,11 +1424,9 @@ onload = e => {
   newSound(...[.5,0,370,.01,.01,.04,2,.6,,,-116,.13,,.2,6,,,.56,.03,.04,801]); // FX_CLICK
   newSound(...[,0,459,.02,.03,.15,1,1.9,,,113,.07,,,,,,.88,.05]); // FX_COIN
   newSound(...[.7,0,484,.01,.04,.39,,4.8,,-59,100,-0.01,.04,-0.2,28,,.02,.81,.06,,1]); // FX_DEFLECT
-  // newSound(...[5,0,84,.03,.07,.14,1,1.3,,-34,,,,.8,,,,.6,.01,,453]); // FX_DEFLECT
   newSound(...[1.4,0,669,.04,.27,.15,1,3,,137,,,.06,.1,,,.05,.8,.26]); // FX_SHIELD
   newSound(...[,0,192,.08,.23,.29,1,.2,6,,,,.08,,15,,,.55,.15]); // FX_MAGNET
   newSound(...[1.7,0,263,.01,.14,.19,3,3,13,-1,,,,,,,.28,.71,.14]); // FX_BESTSCORE
-  newSound(...[.5,0,68,.41,.29,.007,2,.2,-1,,,,,,,,,.83,.43,,285]); // FX_ALARM
 
   // 
   // Generate the imagery.
@@ -1483,18 +1456,7 @@ onload = e => {
   SVG_RECT(52, 76, 16, 16, '000', 8) +
   SVG_RECT(124, 76, 16, 16, '000', 8);
   newTextureRegion('chicky', 640, 600, .5);
-  
-  // Shrapnel.
-  // for (let i = 0; i < 3; i++) {
-  //   svgString = SVG_HEAD(36, 36) + SVG_PATH('m1 1 34 7-22 27z', ['f00', 'f80', 'ff0'][i]);
-    // newTextureRegion('shrapnel' + i, 800, 440 + (i * 40));
-  // }
 
-  // Muzzle flash.
-  // for (let i = 0; i < 4; i++) {
-  //   svgString = SVG_HEAD(66, 66) + SVG_PATH('m50 65-21-19-28 4 19-20-5-29 22 18 28-3-19 21z', ['f00', 'f80', 'ff0', '9df'][i]);
-    // newTextureRegion('muzzle' + i, 800, 155 + (i * 70));
-  // }
   svgString = SVG_HEAD(113, 96) +
   SVG_RECT(8, 0, 96, 96, 'ff2', 48) + 
   SVG_RECT(24, 16, 64, 64, 'fd0', 32);
@@ -1551,15 +1513,11 @@ onload = e => {
   SVG_RECT(16, 0, 81, 96, 'ff2', 41, 48) + 
   SVG_RECT(30, 16, 54, 64, 'fd0', 27, 32);
   newTextureRegion('coin9', 800, 1150);
-  
-
 
   // Star.
   svgString = SVG_HEAD(96, 96) +
   SVG_PATH('m76 96-28-16-31 14 6-33-22-27 32-4 17-31 14 30 33 8-23 23z', 'ff2');
   newTextureRegion('star', 914, 150);
-
-
 
   // Magnet pickup.
   svgString = SVG_HEAD(96, 96) +
@@ -1675,7 +1633,6 @@ onload = e => {
     b.style.transform = `scale(${min(innerWidth / WIDTH, innerHeight / HEIGHT)})`; // Scale container.
     b.style.left = (~~(innerWidth - b.getBoundingClientRect().width) / 2) + px; // Center on x-axis.
   }
-  // onresize(); // Perform initial resize.
 
   // #endregion
 
@@ -1688,9 +1645,6 @@ const updateParticles = () => {
   // Process particles here so they appear on top of everything else
  
   if (particles.length) { // Check to be sure there is at least one partlcle
-
-    // log(particles);
-    // paused = 1;
 
     for (let i = particles.length; i--;) {
     // for (let i = particles.length - 1; i >= 0; i--) {
@@ -1716,7 +1670,6 @@ const updateParticles = () => {
           actor.iX = ((actor.texture.w * actor.originalScale) * (1 - ratio)) / 2;
           actor.iY = ((actor.texture.h * actor.originalScale) * (1 - ratio)) / 2;
         }
-        // if (actor.frames > 0) setTextureRegion(actor, [actor.iX + (actor.tR[2] * clamp(actor.frames - floor(actor.frames * ratio) - 1, 0, actor.frames - 1)), actor.tR[1], actor.tR[2], actor.tR[3]]); // Animate a frame based particle over time.
 
         renderList.push(actor);
       }
